@@ -1,0 +1,65 @@
+{% extends "admin/admin_dashboard.html" %}
+      {% block content %}
+<a href="{{url_for('manage_vendors')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+
+      <h3 class="text-center mb-3">Vendor Information</h3>
+
+      <div class="d-flex justify-content-evenly mb-3">
+        <div class="col-md-6">
+          <p>Name:</p>
+          <h5>{{vdeet.ven_name.capitalize()}}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p>Salon Picture:</p>
+            <img src="{{url_for('static', filename='uploads/'+vdeet.ven_salonpix)}}" width="200">
+        </div>
+        
+      </div>
+      
+    
+      <div class="table-responsive ">
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <td>Work Description</td>
+              <td>{{vdeet.ven_workdesc}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                  {{vdeet.ven_email}}
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                  {{vdeet.ven_address}}
+                </td>
+            </tr>
+            <tr>
+                <td>LGA</td>
+                <td>{{vdeet.thelgas.lga_name}}</td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td>{{vdeet.allstates.state_name}}</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <form method="post" action="{{url_for('approve_vendor')}}">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        <p>
+            <input type="hidden" name="venid" value="{{vdeet.ven_id}}">
+            <label>Select Action</label>
+            <select name="status" class="form-select">
+                <option value="">select</option>
+                <option value="1">Display</option>
+                <option value="0">Hide</option>
+            </select>
+        </p>
+        <p class="text-end"><button class="btn btn-warning">Submit</button></p>
+    </form>
+      {% endblock %}

@@ -1,0 +1,78 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<div class="row">
+    <h3>Bookings To Confirm</h3>
+    {#{bookdeets}#}
+    {#{custbook}#}
+    
+    <h6 class="text-end">Bookings({{custbook|count}})</h6>
+
+    {% with m=get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat, msg in m%}
+        {% if cat=='error': %}
+                    <div class="alert alert-danger">{{ msg }}</div>
+                {% else: %}
+                    <div class="alert alert-success">{{ msg }}</div>
+                {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Booking_id</th>
+              <th scope="col">Pay Status</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
+              <th scope="col">Style</th>
+              <th scope="col">Type</th>
+              <th scope="col">Booking Status</th>
+              <th scope="col">Confirm/Cancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for style, book, odets, order in custbook%}
+            <tr>
+              <td># {{book.booking_id}}</td>
+              <td>
+               <p> {% if order.custorder_status == '1'%}
+                <span class="badge btn-success">Order Paid</span>
+                {%else%}
+                <span class="badge btn-danger">Not Paid</span>
+                {%endif%}
+              </p>
+                <a href="{{url_for('ven_bookingdetails', ordid=order.custorder_id)}}" class="badge btn-secondary btn-sm">View details</a>
+              </td>
+              <td>{{order.thecustorder.cust_fname.capitalize()}} {{order.thecustorder.cust_lname.capitalize()}}
+              </td>
+              <td>{{odets.bookinglink.booking_date}}</td>
+              <td>{{odets.bookinglink.booking_time}}</td>
+              <td>
+                <p>{{style.allstyles.style_name}}</p>
+                <img src="{{url_for('static', filename='uploads/styles/'+style.venstyle_pic)}}" style="width:5rem;height:5rem">
+              </td>
+              <td>{{odets.bookinglink.booking_type}}</td>
+              <td>{%if book.booking_status == 'paid'%}
+                <span class="badge btn-warning">Pending confirmation</span>
+                {%elif book.booking_status == 'confirmed'%}
+                <span class="badge btn-success">Confirmed</span>
+                {%elif book.booking_status == 'cancelled'%}
+                <span class="badge btn-danger">Cancelled</span>
+                {%else%}
+                <span class="badge btn-secondary">Not processed</span>
+                {%endif%}
+              </td>
+              <td>
+                <a href="{{url_for('vendorbook_confirm', bookid=book.booking_id)}}" class="btn badge bg-success "><i class="fa-solid fa-check"></i></a>
+                <a href="{{url_for('vendorbook_cancel', bookid=book.booking_id)}}" class="btn badge bg-danger"><i class="fa-solid fa-xmark"></i></a>
+              </td>
+            </tr>
+            {% endfor%}
+          </tbody>
+        </table>
+      </div>
+</div>
+{% endblock %}

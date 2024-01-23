@@ -1,0 +1,57 @@
+{% extends "admin/admin_dashboard.html" %}
+      {% block content %}
+      
+<a href="{{url_for('manage_vendors')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+
+      <h2> Vendor Products</h2>
+      <div class="btn-toolbar mb-2 mb-md-0 d-flex justify-content-end">
+
+          <a href="{{url_for('screen_services')}}" class="btn btn-sm btn-outline-dark mx-2">Screen Services</a>
+
+        <a href="{{url_for('screen_products')}}" class="btn btn-sm btn-outline-dark mx-2">Screen Products</a>
+        <a href="{{url_for('removed_services')}}" class="btn btn-sm btn-outline-dark mx-2">Removed Services</a>
+        <a href="{{url_for('removed_products')}}" class="btn btn-sm btn-outline-dark mx-2">Removed Products</a>
+      </div>
+      {% with c=get_flashed_messages() %}
+          {% if c %}
+              {% for msg in c %}
+              <div class="alert alert-warning">{{ msg }}</div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">S/N</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Vendor Name</th>
+              <th scope="col">Vendor Id</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prod, ven in pdata%}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{prod.prod_name}}</td>
+              <td>{{ven.ven_name}}</td>
+              <td>{{ven.ven_id}}</td>
+              <td>
+                {% if prod.prod_status=='approved':%}
+                <span class="badge bg-success">Approved</span>
+                  {%else%}
+                <span class="badge bg-warning">Pending</span>
+                  {% endif %}
+              </td>
+              <td>
+                <a href="{{url_for('vet_products', prodid=prod.prod_id)}}" class=" btn btn-sm btn-info"><i class="fa-solid fa-eye pe-2"></i>Vet</a>
+                <a href="{{url_for('delete_venproduct', prodid=prod.prod_id)}}" class="btn btn-sm btn-danger" onclick="return confirm('Do you really want to delete?')"><i class="fa fa-trash pe-2"></i>Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endblock %}

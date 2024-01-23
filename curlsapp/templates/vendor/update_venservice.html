@@ -1,0 +1,54 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<a href="{{url_for('ven_services')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+<div class="row p-3">
+    <h4>Update Service: {{sdeets.allstyles.style_name}}</h4>
+    <form class="row g-3" action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        {% with m=get_flashed_messages(with_categories=True) %}
+        {% if m %}
+            {% for cat, msg in m%}
+            {% if cat=='error': %}
+                        <div class="alert alert-danger">{{ msg }}</div>
+                    {% else: %}
+                        <div class="alert alert-success">{{ msg }}</div>
+                    {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="col-md-6">
+            <label for="sname" class="form-label">Style Name</label>
+            <select name="sname" class="form-select">
+                <option value="">Select style</option>
+                {%for s in stydata%}
+                {%if sdeets.venstyle_styleid == s.style_id %}
+                <option value="{{sdeets.venstyle_styleid}}" selected>{{sdeets.allstyles.style_name}}</option>
+                {%else%}
+                <option value="{{s.style_id}}">{{s.style_name}}</option>
+                {%endif%}
+                {%endfor%}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="styleamt" class="form-label">Style Amount</label>
+            <input type="number" name="styleamt" class="form-control" id="styleamt" value="{{sdeets.venstyle_amt}}">
+        </div>
+        <div class="col-md-6">
+            <label for="styleimg" class="form-label">Image</label>
+            <input type="file" name="styleimg" class="form-control" id="styleimg" >
+        </div>
+        <div class="col-md-6">
+            <label for="stylevid" class="form-label">Video</label>
+            <input type="file" name="stylevid" class="form-control" id="stylevid">
+        </div>
+        
+        <div class="col-12">
+            <label for="styledesc" class="form-label">Description/Special notes</label>
+            <textarea class="form-control" name="styledesc" id="styledesc" style="height:20vh" placeholder="{{sdeets.venstyle_desc}}"></textarea>
+        </div>
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-warning">Update</button>
+        </div>
+      </form>
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<div class="content" >
+    <h3>My Profile</h3>
+    <article class="d-flex justify-content-end">
+        {%if vdeets.ven_salonpix%}
+        <img src="{{url_for('static', filename='uploads/'+vdeets.ven_salonpix)}}" style="width:15rem; height:10rem; object-fit: contain;">
+        {%else%}
+        {{continue}}
+        {%endif%}
+    </article>
+    <form action="{{url_for('ven_profile')}}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        {% with m=get_flashed_messages(with_categories=True) %}
+            {% if m %}
+                {% for cat, msg in m%}
+                {% if cat=='error': %}
+                            <div class="alert alert-danger">{{ msg }}</div>
+                        {% else: %}
+                            <div class="alert alert-success">{{ msg }}</div>
+                        {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Business Name</label>
+            <div class="col-md-7">{{ vdeets.ven_name}} </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Email</label>
+            <div class="col-md-7">
+                {{ vdeets.ven_email}}
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Phone</label>
+            <div class="col-md-7">
+                <input type="text" value="{{ vdeets.ven_phone}}" class="form-control border-info" name="phone">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Address</label>
+            <div class="col-md-7">
+                <input type="text" value="{{ vdeets.ven_address}}" class="form-control border-info" name="address">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">State</label>
+            <div class="col-md-7">
+                <select name="state" id="state" class="form-select border-info">
+                    {% for s in sdata %}
+                    {% if s.state_id ==vdeets.ven_stateid: %}
+                        <option selected value="{{s.state_id}}">{{s.state_name}}</option>
+                        {%else%}
+                        <option value="{{s.state_id}}">{{s.state_name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">L.G.A</label>
+            <div class="col-md-7" id="venlga">
+                
+                
+            </div>
+            <div class="col-md-2">
+                <span>{{vdeets.thelgas.lga_name}}</span>
+            </div>
+            
+        </div>
+        
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Business Description</label>
+            <div class="col-md-7">
+                <textarea class="form-control border-info" rows="4" name="description" placeholder="{{vdeets.ven_workdesc}}" value="{{vdeets.ven_workdesc}}"></textarea>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Social Media Link</label>
+            <div class="col-md-7">
+                <input type="text" value="{{ vdeets.ven_socialmedia}}" class="form-control border-info" name="social1" placeholder="https://insta/salon">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Social Media Link 2</label>
+            <div class="col-md-7">
+                <input type="text" value="{{ vdeets.ven_socialmedia2}}" class="form-control border-info" name="social2" placeholder="https://fb/salon">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-md-3">Picture of Salon</label>
+            <div class="col-md-7">
+                <input type="file" name="salonpix" class="form-control" value="{{vdeets.ven_salonpix}}">
+            </div>
+            <div class="col-md-2">
+                <span>{{vdeets.ven_salonpix}}</span>
+            </div>
+        </div>
+        <div class="col-md-9 text-end">
+            <input type="submit" class="btn btn-warning" value="Update">
+        </div>
+
+    </form>
+  </div>
+
+{% endblock content %}
+{%  block customjs %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#state').change(function(){
+            var stateid = $(this).val()
+            $.ajax({
+                url:"/load_venlga/"+stateid,  
+                type:"GET",
+                success:function(rsp){
+                    $('#venlga').html(rsp)
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        })
+    })
+  </script>
+{% endblock %}

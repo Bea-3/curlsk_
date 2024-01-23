@@ -1,0 +1,176 @@
+{% extends "customer/index_reg.html"%}
+{% block content %}
+    {% with c=get_flashed_messages() %}
+            {% for msg in c %}
+            <p class="alert alert-danger">{{ msg }}</p>
+            {% endfor %}
+        {% endwith %}
+    <form class="row g-3 mb-2" action="" method="post">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        <div class="col-md-6 form-floating">
+            <input type="text" name="firstname" class="form-control" id="firstname" placeholder="First Name">
+            <label for="firstname" class="form-label">First Name</label>
+        </div>
+        <div class="col-md-6 form-floating">
+            <input type="text" name="lastname" class="form-control" placeholder="Last Name" >
+            <label for="lastname" class="form-label">Last Name</label>
+        </div>
+        <div class="col-md-6 form-floating">
+            <input type="email" name="email" class="form-control" placeholder="Email" id="email">
+            <label for="email" class="form-label">Email</label>
+            <small id="feedback" class="mt-2"></small>
+        </div>
+        <div class="col-md-6 form-floating">
+            <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone No.">
+            <label for="phonenumber" class="form-label">Phone No.</label>
+            <small id="format_fdbk" class="mt-2"></small>
+        </div>
+        <div class="col-md-6 mb-3 form-floating"> 
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+            <label for="password" class="form-label">Password</label>
+            <div class="d-flex justify-content-between">
+
+            <button class="btn btn-sm btn-secondary my-2" type="button" id="showpwd" >show</button>
+            <small id="pswdfdbk"></small>
+            </div>
+            
+            
+            
+        </div>
+        <div class="col-md-6 mb-3 form-floating">
+            <input type="password" name="confirmpwd" id="confirmpwd" class="form-control" placeholder="Confirm password">
+            <label for="confirmpwd" class="form-label">Confirm password</label>
+            
+        </div>
+
+        
+        <small id="pswdinfo" >
+            <ul>
+                <li>Contains at least one digit</li>
+                <li>Contains at least one lowercase letter, a-z</li>
+                <li>Contains at least one uppercase letter, A-Z</li>
+                <li>Contains at least one special character, !@#$%^&*</li>
+                <li>Does not contain any whitespace</li>
+                <li>at least 8 characters long</li>
+            </ul>
+        </small>
+        
+        <div class="col-md-12 mb-3 text-center">
+            <button class="btn btn-warning w-50" type="submit" id="signupbtn">Register</button>
+        </div>
+
+      </form>
+    
+    <div class=" text-center mt-3">
+        <p>Already have an account?<a href="{{url_for('login')}}" class="text-primary">Login</a> Here</p>
+    </div>
+{% endblock content %}
+
+{% block customjs%}
+<script>
+    // when the document is ready, and when the user has typed on the input field -onchange, get the csrf and email and send as a json data. make an ajax call. in the route /checkemail, when the response comes back, display in a span under the email. if username is available, no color.if it exists, display the text in danger.
+    $(document).ready(function(){
+
+        $('#email').change(function(){
+            // use a regular expression to validate the email, before sending to the route to check if it exists.        
+
+            var useremail = $(this).val()
+            var csrf = '{{csrf_token()}}'
+            var data2send = {"email":useremail, "csrf_token":csrf}
+            // make ajax call here to check for uniqueness of email and return a feedback.
+            $.ajax({
+                url:"/checkemail",
+                data:data2send,
+                type:'POST',
+                dataType:'json',
+                success:function(response){
+                    $('#feedback').html(response['message']);
+                    if (response['status'] == 'available'){
+                        $('#feedback').removeClass()
+                        $('#feedback').addClass('text-success')
+                        $('#signupbtn').removeAttr('disabled','disabled')        
+                    }else{
+                        $('#feedback').addClass('text-danger')
+                        $('#signupbtn').attr('disabled','disabled')
+                    }    
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        })
+
+        $('#phonenumber').change(function(){
+            var phone = $(this).val()
+            var csrf = '{{csrf_token()}}'
+            var data2send = {"phone":phone, "csrf_token":csrf}
+            $.ajax({
+                url:"/validatephone",
+                data:data2send,
+                type:'POST',
+                dataType:'json',
+                success:function(response){
+                    $('#format_fdbk').html(response['message']);
+                    if (response['status']=='1'){
+                        $('#format_fdbk').removeClass()
+                        $('#format_fdbk').addClass('text-success')
+                        $('#signupbtn').removeAttr('disabled','disabled')
+                    }else{
+                        $('#format_fdbk').addClass('text-danger')
+                        $('#signupbtn').attr('disabled','disabled')
+                    }
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        })
+
+        // validate password
+        $('#pswdinfo').hide()
+        $('#password').change(function(){
+            $('#pswdinfo').show()
+
+            var pwd = $(this).val()
+            var csrf = '{{csrf_token()}}'
+            var data2send = {"password":pwd, "csrf_token":csrf}
+
+            $.ajax({
+                url:"/pwdsecurity",
+                data:data2send,
+                type:'POST',
+                dataType:'json',
+                success:function(response){
+                    $('#pswdfdbk').html(response['message']);
+                    if (response['status']=='ok'){
+                        $('#pswdfdbk').removeClass('text-danger')
+                        $('#pswdfdbk').addClass('text-success')
+                        $('#pswdinfo').hide()
+                        $('#signupbtn').removeAttr('disabled','disabled')
+                    }else{
+                        $('#pswdinfo').show()
+                        $('#pswdfdbk').addClass('text-danger')
+                        $('#pswdinfo ul').addClass('text-danger')
+                        $('#signupbtn').attr('disabled','disabled')
+                    }
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+
+            $('#showpwd').click(function(){
+            var save = $('#password').attr('type')
+            if( save == 'password'){
+            $('#password').attr('type','text')
+            $(this).html('hide')
+            }else{
+            $('#password').attr('type','password')
+            $(this).html('show') 
+            }
+        })
+        })
+        
+    })
+</script>
+{% endblock %}

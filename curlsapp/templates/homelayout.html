@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Layout</title>
+    <!-- Bootsrtap CSS-->
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" >
+    <!-- External CSS -->
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+	<link href="{{url_for('static', filename='fontawesome/css/all.css')}}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        /* .baserow,.basecol{
+           border:1px solid red;
+           min-height: 100px;
+        } */
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row baserow">
+            <div class="col basecol">
+              <nav class="navbar navbar-expand-lg" aria-label="Main navigation" id="navbar">
+                <div class="container-fluid d-flex justify-content-md-between">
+                    <a class="navbar-brand" href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" class="logo"></a>
+                      <button class="navbar-toggler p-0 border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#cknav" aria-controls="cknav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon p-1"><i class="fa-solid fa-bars text-dark"></i></span>
+                      </button>
+
+                  <div class="collapse navbar-collapse d-lg-flex flex-wrap align-items-center ms-md-5 justify-content-md-between py-3" id="cknav">
+
+                   <form class="d-flex col-md-6 ms-md-5" role="search" action="{{url_for('search')}}" method="">
+
+                    <input class="form-control me-2" type="search" placeholder="Search by location or product" aria-label="Search" name="searchinput">
+                    
+                    <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                   </form>
+                  
+                   <ul class="navbar-nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
+                      {% if session.get('user') == None:%}
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('login')}}"><i class="fa-solid fa-user pe-1"></i>Login</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('register')}}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('all_products')}}"><i class="fa-solid fa-cart-shopping"></i>Cart</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item pt-2">
+                        <p><b>
+                          Hi {{custdeets.cust_fname.capitalize() }} 
+                        </b>
+                        </p>
+                        </li>
+                      <li class="nav-item">
+                        <a class="nav-link mx-2" href="{{url_for('account')}}"><i class="fa-solid fa-user"></i> Account</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('cart')}}">
+                        <div id="cart-container"><i class="fa-solid fa-cart-shopping pe-1"></i><span id="cartitem_count">{{cartdets|count}}</span></div>Cart
+                        </a>
+                        </li>
+                      {% endif %}	
+                  </ul>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          
+        </div>
+        <div class="row baserow">
+            {% block menu %}
+            <div class="col basecol">
+              <header class="menubar d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 mb-1 border-bottom">
+                <ul class="nav col-12 col-md-auto justify-content-evenly mb-md-0">
+                  <li><a href="{{url_for('all_salons')}}" class="nav-link px-2 link-secondary">All Salons</a></li>
+                  <li><a href="{{url_for('all_products')}}" class="nav-link px-2 link-dark">Hair Products</a></li>
+                  <li><a href="#toprated" class="nav-link px-2 link-dark">Top rated Salons</a></li>
+                  <li><a href="#trendingprods" class="nav-link px-2 link-dark">Trending Products</a></li>
+                </ul>
+                <div class="col-md-3 text-end d-flex justify-content-end">
+                  {%if custdeets:%}
+                  <a class="nav-link" href="{{url_for('contactus')}}"><i class="fa-regular fa-envelope me-1"></i>Contact Us</a>
+              {% else %}
+              <a class="nav-link" href="{{url_for('ven_signuppage')}}"><i class="fa-solid fa-store me-1"></i>Vendor Center</a>
+              <a class="nav-link" href="{{url_for('contactus')}}"><i class="fa-regular fa-envelope me-1"></i>Contact Us</a>
+              {% endif %}
+                </div>
+              </header>
+            </div>
+            {% endblock menu %}
+        </div>
+        {% block banner %}
+        <div class="row baserow">
+            
+            <div class="col basecol">Banner/ Ads</div>
+            
+        </div>
+        {% endblock %}
+        {% block content %}
+        <div class="row baserow">
+            
+            <div class="col basecol">Content</div>
+            <div class="col basecol">Content</div>
+            
+        </div>
+        {% endblock %}
+        <div class="row baserow">
+            {% block footer %}
+            <div class="col basecol">
+                        <!--Pre Footer with Site Links-->
+                        <div class="row justify-content-between" id="pre-footer">
+                            <div class="col-md-4 mt-3 ps-2">
+                              <div class="">
+                                <a  href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/12t.png')}}" class="logofoot"></a>
+                              </div>
+                              <div>
+                                <h6>Join Our Mailing List</h6>
+                                <p>Be the first to know about latest salons, product updates, exciting news and announcements.</p>
+                              </div>
+                              <div >
+                                <form class="row align-items-center">
+                                  <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+                                  <div class="col-10 my-2">
+                                    {% if session.get('user') == None:%}
+                                    <input type="email" class="form-control" name="subscribe" id="subscribe" placeholder="email@example.com">
+                                    {%else%}
+                                    <input type="email" class="form-control" name="subscribe" id="subscribe" placeholder="email@example.com" value="{{custdeets.cust_email}}">
+                                    {%endif%}
+                                  </div>
+                                  <div class="col-10 text-end">
+                                    <small id="subalert"></small>
+                                    <button class="btn btn-outline-secondary w-100" type="button" id=subbtn >Subscribe</button>
+                                  </div>
+                                </form>
+                              </div>
+                              
+                            </div>
+                         
+                            <div class="col-md-2 mt-3 footer_headings">
+                              <h5>Partner with us</h5>
+                              <ul class="footlinks">
+                                <li><a  href="{{url_for('ven_signuppage')}}">Become a vendor</a></li>
+                                <li><a href="">Advertise</a></li>
+                              </ul>
+                            </div>
+                            <div class="col-md-2 mt-3 footer_headings">
+                              <h5>Curls Korner</h5>
+                              <ul  class="footlinks">
+                                <li><a href="">About us</a></li>
+                                <li><a href="">Terms and Conditions</a></li>
+                                <li><a href="">Privacy Policy</a></li>
+                              </ul>
+                            </div>
+                            <div class="col-md-2 mt-3 footer_headings">
+                              <h5 >Contact Us</h5>
+                                <ul class="footlinks">
+                                    <li><a href="{{url_for('contactus')}}"><i class="fa-regular fa-envelope"></i> Message</a></li>
+                                    <li><a href=""><i class="fa-brands fa-instagram"></i></a> Instagram</li>
+                                    <li><a href=""><i class="fa-brands fa-facebook"></i></a> Facebook</li>
+                                    <li><a href=""><i class="fa-brands fa-twitter"></i></a> Twitter</li>
+                                </ul>
+                            </div>
+                          </div>
+                            <div class="to_top">
+                              <a href="#navbar" class="btn btn-lg"><i class="fa-solid fa-chevron-up"></i></a>
+                            </div>
+                  
+                          <!--Footer with copyright-->
+                          <div class="row" id="footer">
+                            <div class="col-11 text-center mt-2">
+                              <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
+                          </div>
+                          </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+<!-- jQuery file -->
+<script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+
+{%  block customjs %}
+<script>
+  $(document).ready(function(){
+
+    $('#subbtn').click(function(){
+
+      var subemail = $('#subscribe').val()
+      var csrf = '{{csrf_token()}}'
+      var data2send = {"subemail":subemail, "csrf_token":csrf}
+      alert(subemail)
+      // $.ajax({
+      //   url:'/subscribe/newsletter',
+      //   data:data2send,
+      //   type:'get',
+      //   data:'json',
+      //   success:function(response){
+      //     $('#subalert').html(response['message'])
+      //     if (response['status']=='ok'){
+      //         $('#subalert').removeClass('text-danger')
+      //         $('#subalert').addClass('text-success')
+      //     }else if(response['status']=='exists'){
+      //       $('#subalert').removeClass('text-success')
+      //       $('#subalert').addClass('text-info')
+      //     }else{
+      //         $('#subalert').addClass('text-danger')
+      //     }
+      //   },
+      //   error:function(err){
+      //     console.log(err)
+      //   }
+      // })
+
+    })
+    
+
+
+    
+  
+
+})
+</script>
+{% endblock %}
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+<!--External js-->
+<script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
+</body>
+</html>

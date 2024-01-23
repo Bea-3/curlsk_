@@ -1,0 +1,67 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock %}
+{% block content%}
+<div class="row" style="min-height:400px">
+            <div class="col-md-2">
+                <!--Side bar-->
+                {% include "customer/accountmenu.html"%}
+            </div>
+            <div class="col-md-10">
+              {% if bookdets:%}
+              <h6 class="text-end m-4 ">Bookings({{bookdets|count}})</h6>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Booking ID</th>
+                      <th scope="col">Style</th>
+                      <th scope="col">Booking Details</th>
+                      <th scope="col">Booking Type</th>
+                      <th scope="col">Salon</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Salon Confirmation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- (Orderdetails,order) -->
+                    {% for item,orderinfo in bookdets %}
+                    
+                    <tr>
+                      <td># {{ item.bookinglink.booking_id}}</td>
+                      <td>
+                        <img src="{{url_for('static', filename='uploads/styles/'+item.bookinglink.stylepref.venstyle_pic)}}" style="width:5rem" class="img-fluid">
+                      </td>
+                      <td>
+                        <p>{{item.bookinglink.stylepref.allstyles.style_name}}</p>
+                        <p>Time: {{item.bookinglink.booking_time}}</p>
+                        <p>Date: {{item.bookinglink.booking_date}}</p>
+                      </td>
+                      <td>{{item.bookinglink.booking_type}}</td>
+                      <td>{{item.bookinglink.stylepref.vendeets.ven_name.capitalize()}}</td>
+                      <td>&#8358 {{"{0:,.2f}".format(item.order_amt)}}</td>
+                      <td>
+
+                        {%if item.bookinglink.booking_status == 'paid'%}
+                          <span class="badge bg-warning">Paid and awaiting confirmation</span>
+                            {%elif item.bookinglink.booking_status == 'confirmed'%}
+                            <span class="badge bg-success">Confirmed</span>
+                        {%elif item.bookinglink.booking_status == 'cancelled'%}
+                          <span class="badge bg-danger">Cancelled</span>
+                        {%else%}
+                        <span class="badge bg-secondary">Not processed</span>
+                        {%endif%}
+                      </td>                  
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {%else%}
+              <div class="alert alert-warning">You haven't made a booking yet. Kindly search for any salon in your state and make a booking.</div>
+              {%endif%}
+            </div>
+          </div>
+{% endblock content%}
+
+            

@@ -1,0 +1,75 @@
+{% extends "homelayout.html" %}
+{% block banner %}
+<div class="row mb-5">
+    <div class="col" >
+        <section  class="d-flex align-items-center justify-content-evenly headingbg" >
+            <h2>All Hair Products</h2>    
+        </section>
+    </div>
+</div>
+{% endblock banner %}
+
+{% block content %}
+
+<!--ALL SALONS-->
+<div class="row mb-3 g-3">
+    {% for v in allprods %}
+    <div class="col-md-3 mx-auto">
+    <div class="card">
+        <a href="{{url_for('view_product', id=v.prod_id)}}"><div class="img_wrapper">
+        {%if v.prod_pic:%}
+        <img src="{{url_for('static', filename='uploads/products/'+v.prod_pic)}}" alt="product image">
+        {% else %}
+        <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="image of a salon">
+        {% endif %}
+        </div></a>
+        <div class="card-body">
+        <h6 class="card-title">{{ v.prod_name.capitalize()}}</h6>
+        <p class="card-text">{{v.prod_desc[0:25]}}</p>
+        <p class="card-text" id="itemamt_{{v.prod_id}}" data-prod-amt="{{v.prod_amt}}" >&#8358 {{"{0:,.2f}".format(v.prod_amt)}}</p>
+        </div>
+        <small id="cartfdbk_{{v.prod_id}}" data-fdbk="{{v.prod_amt}}"></small>
+        <div class="card-footer text-end">
+        <a href="{{url_for('view_product', id=v.prod_id)}}" class="btn-sm btn-outline-dark"> View More</a>
+        <button type="button" data-add_idtocart="{{v.prod_id}}" class="btn-sm btn-outline-dark add_cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+{% block customjs%}
+<script>
+    $(document).ready(function(){
+
+    $('.add_cart').click(function(){
+    var prodid = $(this).data('add_idtocart')
+    var qty = '1'
+    var amt = $('#itemamt_'+prodid).data('prod-amt')
+    var total = parseFloat(qty) * parseFloat(amt)
+    // alert(prodid)
+    // alert(amt)
+    // alert(total)
+    var data2send = {"qty":qty, "prodid":prodid, "amount":amt, "total":total}
+    // make ajax call
+    $.ajax({
+        url:"/add_one_item",
+        type:"GET",
+        data:data2send,
+        dataType:"JSON",
+        success:function(rsp){
+        console.log(rsp)
+        $('#cartfdbk_'+prodid).html('Product added to cart')
+        $('#cartfdbk_'+prodid).addClass('alert alert-success')
+        
+        },
+        error:function(err){
+        console.log(err)
+        }
+    })
+})
+
+
+})
+</script>
+{% endblock %}

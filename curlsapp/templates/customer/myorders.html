@@ -1,0 +1,59 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock %}
+{% block content%}
+<div class="row" style="min-height:400px">
+            <div class="col-md-2">
+                {% include "customer/accountmenu.html"%}
+            </div>
+            
+            <div class="col-md-10 ms-sm-auto px-md-4">
+              {#{orderdeets}#}
+              {% if orderdeets:%}
+              <h6 class="text-end m-4 ">Orders({{orderdeets|count}})</h6>
+             
+              
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Order Id</th>
+                      <th scope="col">Full Name</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Reference No</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Date Paid</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for payinfo,orderinfo in orderdeets %}
+                    <tr>
+                      <td>#{{ orderinfo.custorder_id}}</td>
+                      <td>{{orderinfo.thecustorder.cust_fname}} {{orderinfo.thecustorder.cust_lname}}</td>
+                      <td>&#8358 {{"{0:,.2f}".format(orderinfo.custorder_totalamt)}}</td>
+                      <td>{{payinfo.pay_ref}}</td>
+                      <td>
+                        {% if orderinfo.custorder_status=='1':%}
+                        <span class="badge bg-success">Confirmed</span>
+                          {%else%}
+                        <span class="badge bg-warning">Pending</span>
+                          {% endif %}
+                      </td>
+                      <td>{{orderinfo.custorder_date}}</td>
+                      <td>
+                        <a href="{{url_for('myorders_details',id=orderinfo.custorder_id)}}" class=" btn btn-sm btn-info"><i class="fa-solid fa-eye pe-2"></i>View Details</a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {%else%}
+              <div class="alert alert-warning">No orders. Kindly search for any product and place an order.</div>
+              {%endif%}
+            </div>
+          </div>
+{% endblock content%}
+
+            

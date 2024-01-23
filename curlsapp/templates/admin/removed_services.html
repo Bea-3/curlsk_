@@ -1,0 +1,49 @@
+{% extends "admin/admin_dashboard.html" %}
+      {% block content %}
+      
+
+      <h2> Screen Vendors</h2>
+      <div class="btn-toolbar mb-3 mb-md-0 d-flex justify-content-end">
+
+          <a href="{{url_for('screen_services')}}" class="btn btn-sm btn-outline-dark mx-2">Screen Services</a>
+
+        <a href="{{url_for('screen_products')}}" class="btn btn-sm btn-outline-dark mx-2">Screen Products</a>
+        <a href="{{url_for('removed_services')}}" class="btn btn-sm btn-outline-dark mx-2">Removed Services</a>
+        <a href="{{url_for('removed_products')}}" class="btn btn-sm btn-outline-dark mx-2">Removed Products</a>
+      </div>
+      {% with c=get_flashed_messages() %}
+          {% if c %}
+              {% for msg in c %}
+              <div class="alert alert-warning">{{ msg }}</div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+      <div class="table-responsive mt-3">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">S/N</th>
+              <th scope="col">Service Name</th>
+              <th scope="col">Service ID</th>
+              <th scope="col">Service Desc</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Vendor ID</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for x in stydeets%}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{x.allstyles.style_name}}</td>
+              <td>{{x.allstyles.style_id}}</td>
+              <td>{{x.venstyle_desc}}</td>
+              <td>{{x.venstyle_amt}}</td>
+              <td>{{x.vendeets.ven_id}}</td>
+              <td>Deleted by {{x.vendeets.ven_name}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endblock %}

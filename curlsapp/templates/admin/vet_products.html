@@ -1,0 +1,65 @@
+{% extends "admin/admin_dashboard.html" %}
+      {% block content %}
+<a href="{{url_for('screen_products')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+
+      <h3 class="text-center mb-3">Vendor Products</h3>
+
+      <div class="d-flex justify-content-evenly ">
+        <div class="col-md-6">
+          <p>Name:</p>
+          <h5>{{pdeet.thevendor.ven_name.capitalize()}}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p>Salon Picture:</p>
+            <img src="{{url_for('static', filename='uploads/'+pdeet.thevendor.ven_salonpix)}}" width="200">
+        </div>
+        
+      </div>
+      
+      <h4>Service</h4>
+      <div class="table-responsive">
+        <table class="table ">
+          <tbody>
+            <tr>
+              <td>Product Name</td> <td>{{pdeet.prod_name}}</td>
+            </tr>
+            <tr>
+                <td>Product Id</td> <td>{{pdeet.prod_id}}</td>
+            </tr>
+            <tr>
+                <td>Amount</td> <td>{{pdeet.prod_amt}}</td>
+            </tr>
+            <tr>
+                <td>Product Image</td>
+                <td>
+                  <img src="{{url_for('static', filename='uploads/products/'+pdeet.prod_pic)}}" width="200">
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Quantity</td>
+                <td>{{pdeet.prod_qty}}</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>{{pdeet.prod_desc}}</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <form method="post" action="">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        <p>
+            <input type="hidden" name="prodid" value="{{pdeet.prod_id}}">
+            <label>Select Action</label>
+            <select name="status" class="form-select">
+                <option value="">select</option>
+                <option value="approved">Publish</option>
+                <option value="pending">Unpublish</option>
+            </select>
+        </p>
+        <p class="text-end"><button class="btn btn-warning">Submit</button></p>
+    </form>
+      {% endblock %}

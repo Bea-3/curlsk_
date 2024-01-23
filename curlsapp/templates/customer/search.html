@@ -1,0 +1,82 @@
+{% extends "homelayout.html" %}
+{% block banner %}
+<div class="row mb-5">
+    <div class="col" >
+        <section class="d-flex align-items-center justify-content-evenly headingbg" >
+            <h1>Your Search</h1>    
+        </section>
+    </div>
+</div>
+{% endblock banner %}
+
+{% block content %}
+      <div class="row mb-3">
+         {#{results}#}
+         {#{prodresult}#}
+        
+          <div class="col">
+            {% if results or prodresult:%}
+            <div class="row g-3">
+                <!--Search results for Salons --> 
+             {% for ven,lga,state in results %}
+              <div class="col-md-3 mx-auto">
+                <div class="card">
+                  <a href="{{url_for('view_salon', id=ven.ven_id)}}">
+                  <div class="img_wrapper">
+                    {% if ven.ven_salonpix:%}
+                    <img src="{{url_for('static', filename='uploads/'+ven.ven_salonpix)}}" alt="image of a salon">
+                    {%else%}                
+                    <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="image of a salon">
+                    {%endif%}
+                  </div>
+                </a>
+                  <div class="card-body">
+                    <h6 class="card-title">{{ven.ven_name.capitalize()}}</h6>
+                    <p class="card-text">{{ven.ven_address}}</p>
+                  </div>
+                  <div class="card-footer text-end">
+                    <a href="{{url_for('view_salon', id=ven.ven_id)}}" class="btn-sm btn-outline-secondary">View Salon</a>
+                  </div>
+                </div>
+              </div>          
+              {% endfor %}
+              <!--Search results for products-->
+
+              {% for prod,cat in prodresult%}
+              <div class="col-md-3 mx-auto">
+                <div class="card">
+                  <a href="{{url_for('view_product', id=prod.prod_id)}}">
+                    <div class="img_wrapper">
+                    {%if prod.prod_pic:%}
+                    <img src="{{url_for('static', filename='uploads/products/'+prod.prod_pic)}}" alt="product image">
+                   {% else %}
+                    <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="image of a salon">
+                   {% endif %}
+                  </div>
+                  </a>
+                  <div class="card-body">
+                    <h6 class="card-title">{{ prod.prod_name.capitalize()}}</h6>
+                    <p class="card-text">{{prod.prod_desc[0:25]}}</p>
+                    <p class="card-text">&#8358 {{"{0:,.2f}".format(prod.prod_amt)}}</p>
+                  </div>
+                  <div class="card-footer text-end">
+                    <a href="{{url_for('view_product', id=prod.prod_id)}}" class="btn-sm btn-outline-dark"> View More</a>
+                    <a href="#" class="btn-sm btn-outline-dark"><i class="fa-solid fa-cart-plus"></i> Add to Cart</a>
+                  </div>
+                </div>
+              </div>
+              {%endfor%}
+              
+              
+
+            </div>
+            {%else%}
+            <div class="alert alert-warning text-center">No Results Found</div>
+            {%endif%}
+          </div>
+          
+      </div>
+
+   
+{% endblock content %}
+

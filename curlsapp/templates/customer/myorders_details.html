@@ -1,0 +1,59 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock %}
+{% block content%}
+<div class="row" style="min-height:400px">
+            <div class="col-md-2">
+                {% include "customer/accountmenu.html"%}
+            </div>
+            
+            <div class="col-md-10 ms-sm-auto px-md-4">
+                <a href="{{url_for('cust_orders')}}" class="btn mb-3"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+              
+                <div class="mb-3">
+                  <h5>Reference No: {{payref.pay_ref}}</h5>
+                  <p>Date: {{formatdate}}</p>
+                  <p>Address: {{deetsid.deliveryaddress }} {{deetsid.deliverystate}}</p>
+                  <p>Contact: {{ deetsid.phonenum}}</p>
+                  <p><b>Items({{odets|count}})</b></p>
+                </div>
+                
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <!-- <thead> -->
+                    <!-- <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Item</th>
+                      <th scope="col">Qty</th>
+                      <th scope="col">Amount</th>
+                    </tr> -->
+                  <!-- </thead> -->
+                  <tbody>
+                    {% for items in odets %}
+                    <tr>
+                      {% if items.order_prodid == 0 or items.order_prodid == None%}
+                      <td>
+                        <img src="{{url_for('static', filename='uploads/styles/'+items.bookinglink.stylepref.venstyle_pic)}}" width="60" height="60" class="img-fluid">
+                      </td>
+                      <td>
+                        <p>{{items.bookinglink.stylepref.allstyles.style_name}}</p>
+                        <p>{{items.bookinglink.booking_date}}</p>
+                    </td>
+                    {% else %}
+                    <td>
+                        <img src="{{url_for('static', filename='uploads/products/'+items.prodets.prod_pic)}}" width="60" height="50" class="img-fluid">
+                    </td>
+                    <td>{{items.prodets.prod_name}}</td>
+                      {% endif %}
+                      <td> x {{items.order_prodqty}}</td>
+                      <td>&#8358 {{"{0:,.2f}".format(items.order_amt)}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+{% endblock content%}
+
+            

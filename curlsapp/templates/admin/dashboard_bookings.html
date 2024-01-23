@@ -1,0 +1,76 @@
+{% extends "admin/admin_dashboard.html"%}
+      {% block content %}
+      <div class="mt-4">
+        <ul class="nav justify-content-end orderlink">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{url_for('dashboard_bookings')}}">Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Cancelled Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Processing Orders</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Cancelled Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Completed</a>
+              </li>
+          </ul>
+    </div>
+      
+    <div class="pt-3 pb-2 mb-3 border-bottom">
+
+
+      <h2>Bookings</h2>
+      {#{allbooks}#}
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Booking Id</th>
+              <th scope="col">Status</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Booking Details</th>
+              <th scope="col">Style Img</th>
+              <th scope="col">Order No</th>
+              <th scope="col">Vendor Id</th>
+              <th scope="col">Vendor Name</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            {%for order, odeet in allbooks%}
+            <tr>
+              <td># {{odeet.order_bookid}}</td>
+              <td>
+                {%if odeet.bookinglink.booking_status == 'paid'%}
+                    <span class="badge bg-warning">Paid and awaiting confirmation</span>
+                    {%elif odeet.bookinglink.booking_status == 'confirmed'%}
+                    <span class="badge bg-success">Confirmed</span>
+                {%elif odeet.bookinglink.booking_status == 'cancelled'%}
+                    <span class="badge bg-danger">Cancelled</span>
+                {%else%}
+                <span class="badge bg-secondary">Not processed</span>
+                {%endif%}
+              </td>
+              <td>&#8358 {{"{0:,.2f}".format(odeet.order_amt)}}</td>
+              <td>
+                <p>Name: {{odeet.bookinglink.stylepref.allstyles.style_name}}</p>
+                <p>Time: {{odeet.bookinglink.booking_time}}</p>
+                <p>Date: {{odeet.bookinglink.booking_date}}</p>
+                <p>Type: {{odeet.bookinglink.booking_type}}</p>
+              </td>
+              <td>
+                <img src="{{url_for('static', filename='uploads/styles/'+odeet.bookinglink.stylepref.venstyle_pic)}}" style="width:5rem" class="img-fluid">
+              </td>
+              <td>{{order.custorder_id}}</td>
+              <td>{{odeet.bookinglink.stylepref.venstyle_vendorid}}</td>
+              <td>{{odeet.bookinglink.stylepref.vendeets.ven_name}}</td>
+            </tr>
+           {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endblock %}

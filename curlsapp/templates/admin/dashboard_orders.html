@@ -1,0 +1,74 @@
+{% extends "admin/admin_dashboard.html"%}
+      {% block content %}
+      <div class="mt-4">
+        <ul class="nav justify-content-end orderlink">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page"  href="{{url_for('dashboard_bookings')}}">Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Cancelled Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Processing Orders</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Cancelled Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Completed</a>
+              </li>
+          </ul>
+    </div>
+      
+    <div class="pt-3 pb-2 mb-3 border-bottom">
+
+
+      <h2>All Orders</h2>
+      {#{allorders}#}
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Order Id</th>
+              <th scope="col">Status</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Pay Status </th>
+              <th scope="col">Pay Date</th>
+              <th scope="col">Pay Ref</th>
+              <th scope="col">Customer Id</th>
+              <th scope="col">Order Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for pay, order in allorders%}
+            <tr>
+              <td># {{order.custorder_id}}</td>
+              <td>
+                {% if order.custorder_status == '1'%}
+                <span class="badge bg-success">confirmed</span>
+                {%else%}
+                <span class="badge bg-danger">cancelled</span>
+                {%endif%}
+              </td>
+              <td>{{order.custorder_totalamt}}</td>
+              <td>
+                {%if pay.pay_status == 'pending'%}
+                <span class="badge bg-warning">Pending</span>
+                {%elif pay.pay_status == 'success' %}
+                <span class="badge bg-success">Success</span>                
+                {%else%}
+                <span class="badge bg-danger">Failed</span>
+                {%endif%}
+              </td>
+              <td>{{pay.pay_date}}</td>
+              <td>{{pay.pay_ref}}</td>
+              <td>{{order.order_custid}}</td>
+              <td>
+                <a href="{{url_for('allorders_details',ordid=order.custorder_id)}}" class=" btn btn-sm btn-info"><i class="fa-solid fa-eye pe-2"></i>View details</a>
+              </td>
+            </tr>
+           {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endblock %}

@@ -1,0 +1,62 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<a href="{{url_for('ven_bookings')}}" class="btn mb-3"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+<div class="row">
+    
+              
+    
+    {#{history}#}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+                <th>Payment Information</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Reference No:</td> <td>{{history.pay_ref}}</td>
+            </tr>
+            <tr>
+                <td>Payment Date:</td> <td>{{history.pay_date}}</td>
+            </tr>
+            <tr>
+                <td>Order No:</td> <td># {{history.odetails.custorder_id}}</td>
+            </tr>
+            <tr>
+                <td>Order Total:</td> <td>&#8358 {{"{0:,.2f}".format(history.odetails.custorder_totalamt)}}</td>
+            </tr>
+            <tr>
+                <td>Booking Amount:</td> <td>&#8358 {{"{0:,.2f}".format(bookinfo.order_amt)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+                <th>Customer Information</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Customer Name</td> <td>{{history.odetails.thecustorder.cust_fname.capitalize()}} {{history.odetails.thecustorder.cust_lname.capitalize()}}</td>
+            </tr>
+            <tr>
+                <td>Address:</td> <td>{{history.odetails.deliveryaddress}} , {{history.odetails.deliverystate}}</td>
+            </tr>
+            <tr>
+                <td>Phone Number:</td> <td>{{history.odetails.phonenum}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+</div>
+{% endblock %}

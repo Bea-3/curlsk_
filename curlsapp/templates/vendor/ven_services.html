@@ -1,0 +1,73 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<div class="row">
+
+    <h4>Service List</h4>
+    <div class="text-end">
+            <a href="{{url_for('add_styles')}}" class="btn btn-dark">Add Service</a>
+    </div>
+    {% if data:  %}
+
+    {% with m=get_flashed_messages() %}
+            {% if m %}
+        {% for msg in m%}
+        <div class="alert alert-warning">{{ msg }}</div>
+         {% endfor %}
+            {% endif %}
+            {% endwith %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Description/Notes</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Video</th>
+                    <th scope="col">Action</th>
+                  </tr>
+            </thead>
+            <tbody>
+                {% for s in data %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{s.allstyles.style_name}}</td>
+                    <td>&#8358 {{"{0:,.2f}".format(s.venstyle_amt)}}</td>
+                    <td>
+                        <p>{{s.venstyle_desc}}</p>
+                    </td>
+                    <td>
+                        {% if s.venstyle_status == 'approved'%}
+                        <p class="badge alert-success">Approved</p>
+                        {%else%}
+                        <p class="badge alert-warning">Pending</p>
+                        {%endif%}
+                    </td>
+                    <td class="venmedia">
+                       <img src="{{url_for('static', filename='uploads/styles/'+s.venstyle_pic)}}" style="width:6rem;height:8rem;object-fit: contain;">
+                    </td>
+                    <td class="venmedia">
+                        <video controls style="width:6rem;height:8rem;object-fit: contain;">
+                            <source src="{{url_for('static', filename='uploads/styles/'+s.venstyle_vid)}}" type="video/mp4" >
+                        </video>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column">
+                            <a href="{{url_for('edit_venservices', servid=s.ven_styleid)}}" class=" btn btn-sm btn-primary m-2"><i class="fa-solid fa-pen pe-2"></i>Edit</a>
+                            <a href="{{url_for('hide_venservices', servid=s.ven_styleid)}}" class="btn btn-sm btn-danger m-2" onclick="return confirm('Do you really want to delete?')"><i class="fa fa-trash pe-2"></i>Delete</a>
+                        </div>  
+                    </td>
+                  </tr>
+                  {% endfor %}
+            </tbody>
+        </table>
+        <hr class="my-2">
+    </div>
+    {% else %}
+        <p class="alert alert-warning mt-3">No Service has been added yet. Kindly click the button to proceed</p>
+    {% endif %}
+    
+</div>
+{% endblock %}

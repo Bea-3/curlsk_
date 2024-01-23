@@ -1,0 +1,154 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock banner %}
+{% block content %}
+<div class="row mt-3 g-3 mb-3">
+    
+    <div class="col-md-6">
+        <div class="product-img">
+            {% if prod.prod_pic:%}
+            <img src="{{url_for('static',filename='uploads/products/'+prod.prod_pic)}}" alt="...">
+            {% else%}
+            <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="proxy image">
+            {%endif%}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="product-details">
+            <h3>{{prod.prod_name.capitalize()}}</h3>
+            <h5 class="my-4 pe-3 text-end">&#8358 {{ "{0:,.2f}".format(prod.prod_amt)}}</h5>
+            
+            <p>{{prod.prod_desc}}</p>
+            <p>Sold by: {{prod.thevendor.ven_name.capitalize()}}</p>
+            <p>QTY<span class="ps-3 text-center">
+                <button  type="button" id="minus" class="border-0"><i class="fa-solid fa-minus"></i></button>
+        
+                <input type="text" min="1" max="10" name="cartqty" value="1" id="cartqty" class="text-center" style="width:30px;" readonly>
+               
+                <button type="button" id="plus" class="border-0"><i class="fa-solid fa-plus"></i></button>
+            </span></p>
+            {% if custdeets != None%}
+            <p id="purchase_rsp" class="mt-3"></p>
+            <button class="btn btn-sm col-12 btn-warning my-4" id="cartbtn">Add to Cart</button>
+            {% else %}
+            <a href="{{url_for('login')}}" class="btn btn-sm col-12 btn-warning my-4">Login in to Purchase</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if vprods: %}
+<h3>View More Products From {{prod.thevendor.ven_name}}</h3>
+<div class="row g-3 mb-4 mt-3">
+    {% for v in vprods %}
+    {% if v.prod_id != prod.prod_id%}
+    <div class="col-md-3 mx-auto">
+        <div class="card">
+            <a href="{{url_for('view_product', id=v.prod_id)}}">
+                <div class="img_wrapper">
+                {%if v.prod_pic:%}
+                <img src="{{url_for('static', filename='uploads/products/'+v.prod_pic)}}" alt="product image">
+                {% else %}
+                <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="proxy image">
+                {% endif %}
+                </div>
+            </a>
+            <div class="card-body">
+            <h6 class="card-title">{{ v.prod_name.capitalize()}}</h6>
+            <p class="card-text">{{v.prod_desc[0:25]}}</p>
+            <p class="card-text" id="itemamt_{{v.prod_id}}" data-prod-amt="{{v.prod_amt}}" >&#8358 {{"{0:,.2f}".format(v.prod_amt)}}</p>
+            </div>
+            <small id="cartfdbk_{{v.prod_id}}" data-fdbk="{{v.prod_amt}}"></small>
+            <div class="card-footer text-end">
+            <a href="{{url_for('view_product', id=v.prod_id)}}" class="btn-sm btn-outline-dark"> View More</a>
+            <button type="button" data-add_idtocart="{{v.prod_id}}" class="btn-sm btn-outline-dark add_cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+            </div>
+        </div>
+        </div>
+        {% else %}
+        {{ continue }}
+        {% endif %}
+    {% endfor %}
+</div>
+{% else %}
+<div class="col text-center my-5">
+<a href="{{url_for('all_products')}}" class="btn btn-outline-dark">View More Products</a>
+</div>
+{% endif %}
+{% endblock content%}
+{% block customjs %}
+<script>
+    $(document).ready(function(){   
+      // when thebuttons are clicked, reduce or increase the value that is there. 
+     var currentqty = parseInt($('#cartqty').val())
+     $('#plus').click(function(){
+        $('#cartqty').val(currentqty + 1)
+        currentqty++
+     });
+     $('#minus').click(function(){
+        if (currentqty > 1){
+            $('#cartqty').val(currentqty - 1)
+            currentqty--
+        }else{
+            $('#cartqty').val(currentqty=1)
+        }    
+     })
+
+      // make ajax call
+      $('#cartbtn').click(function(){
+        var qty = $('#cartqty').val()
+        var price = "{{prod.prod_amt}}"
+        var prodid = "{{prod.prod_id}}"
+        var total = parseFloat(qty) * parseFloat(price)
+        var data2send = "qty="+qty+"&prodid="+prodid+"&amount="+price+"&total="+total;
+
+        $.ajax({
+        url:"/addproduct_tocart",
+        data:data2send,
+        type:"GET",
+        dataType:"text",
+        beforeSend:function(){
+            $('#cartbtn').html("Adding")
+        },
+        success:function(rsp){
+            console.log(rsp)
+            $('#cartbtn').html("Product Added to cart")
+            $('#purchase_rsp').html("Product Added to cart")
+            $('#purchase_rsp').addClass("alert alert-success")
+            // var cart_count = parseInt($('#cartitem_count').text())+1
+            // $('#cartitem_count').text('{{cartdets|count}}')
+        },
+        error:function(err){
+            console.log(err)
+        }
+      })
+      })  
+    
+      $('.add_cart').click(function(){
+    var prodid = $(this).data('add_idtocart')
+    var qty = '1'
+    var amt = $('#itemamt_'+prodid).data('prod-amt')
+    var total = parseFloat(qty) * parseFloat(amt)
+    // alert(prodid)
+    // alert(amt)
+    // alert(total)
+    var data2send = {"qty":qty, "prodid":prodid, "amount":amt, "total":total}
+    // make ajax call
+    $.ajax({
+        url:"/add_one_item",
+        type:"GET",
+        data:data2send,
+        dataType:"JSON",
+        success:function(rsp){
+        console.log(rsp)
+        $('#cartfdbk_'+prodid).html('Product added to cart')
+        $('#cartfdbk_'+prodid).addClass('alert alert-success')
+        
+        },
+        error:function(err){
+        console.log(err)
+        }
+    })
+    })
+    })
+    </script>
+{% endblock %}

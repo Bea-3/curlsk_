@@ -1,0 +1,170 @@
+{% extends "homelayout.html" %}
+{% block banner %}
+  <div class="row mb-3" id="banner">
+          <!--BANNER CAROUSEL-->
+          <div class="col">
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button"   data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button"  data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div id="salonbg" style="height:inherit;" >
+                    
+                    <div class="inner_caption col-md-4" >
+                      <h2 class="content2">Book your hair appointments with Ease</h2>
+                      <p class="content"><a href="{{url_for('all_salons')}}" class="btn btn-warning w-60">Book Now</a></p>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <div class="carousel-item ">
+                  <div id="banner2">
+
+                    <div class="caption2 col-md-4">
+                      <h2 class="content">Hair Care for Everyone</h2>
+                      <p class="content"><a href="{{url_for('all_salons')}}" class="btn btn-warning w-60">View Salons</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div id="banner3" >
+
+                    <div class="caption3 col-md-4">
+                      <h5 class="content">Shop Hair Products</h5>
+                      <p class="content"><a href="{{url_for('all_products')}}" class="btn btn-warning w-60">Shop Now</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item  ">
+                  <div id="banner1">
+
+                    <div class="caption1 col-md-4">
+                      <h5 class="content2"><a href="#" class="btn-outline-dark">Search</a> for hair styling experts near you</h5>
+                      <!-- <p class="content">use our <button class="btn btn-outline-warning">Search</button> option</p> -->
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button> -->
+            </div>
+          </div>
+         
+    </div>
+{% endblock banner %}
+
+{% block content %}
+
+      <div class="row mb-3">
+          <!--CARDS with Top rated salons-->
+          
+          <div class="col">
+            <h2 id="toprated">Top Rated Salons</h2>
+            <div class="row g-3">
+              {% for p in info %}
+              <div class="col-md-3 mx-auto">
+                <div class="card">
+                  <a href="{{url_for('view_salon', id=p.ven_id)}}">
+                    <div class="img_wrapper">
+                    {% if p.ven_salonpix:%}             
+                    <img src="{{url_for('static', filename='uploads/'+p.ven_salonpix)}}" alt="image of a salon">
+
+                    {% else %}
+                    <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="image of a salon">
+                    {% endif %}
+                  </div>
+                </a>
+                  <div class="card-body">
+                    <h6 class="card-title">{{p.ven_name.capitalize()}}</h6>
+                    <p class="card-text">{{p.ven_address}}</p>
+                  </div>
+                  <div class="card-footer text-end">
+                    <a href="{{url_for('view_salon', id=p.ven_id)}}" class="btn-sm btn-outline-dark">View Salon</a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          
+      </div>
+
+      <div class="row mb-3">
+          <!--CARDS with Best hair products-->
+          <div class="col">
+            <h2 id="trendingprods">This month's trending products</h2>
+            <div class="row g-3">
+              {% for v in prods %}
+              <div class="col-md-3 mx-auto">
+                <div class="card">
+                  <a href="{{url_for('view_product', id=v.prod_id)}}"><div class="img_wrapper">
+                    {%if v.prod_pic:%}
+                    <img src="{{url_for('static', filename='uploads/products/'+v.prod_pic)}}" alt="product image">
+                    {% else %}
+                    <img src="{{url_for('static', filename='images/welcome.jpg')}}" alt="image of a salon">
+                    {% endif %}
+                  </div></a>
+                  <div class="card-body">
+                    <h6 class="card-title">{{ v.prod_name}}</h6>
+                    <p class="card-text">{{v.prod_desc[0:25]}}</p>
+                    <p class="card-text" id="itemamt_{{v.prod_id}}" data-prod-amt="{{v.prod_amt}}" >&#8358 {{"{0:,.2f}".format(v.prod_amt)}}</p>
+                  </div>
+                  <small id="cartfdbk_{{v.prod_id}}" data-fdbk="{{v.prod_amt}}"></small>
+                  <div class="card-footer text-end">  
+                    <a href="{{url_for('view_product', id=v.prod_id)}}" class="btn-sm btn-outline-dark"> View More</a>
+                    <button type="button" data-add_idtocart="{{v.prod_id}}" class="btn-sm btn-outline-dark add_cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+      </div>
+{% endblock content %}
+{% block customjs%}
+<script>
+  $(document).ready(function(){
+
+    $('.add_cart').click(function(){
+      var prodid = $(this).data('add_idtocart')
+      var qty = '1'
+      var amt = $('#itemamt_'+prodid).data('prod-amt')
+      var total = parseFloat(qty) * parseFloat(amt)
+      // alert(prodid)
+      // alert(amt)
+      // alert(total)
+      var data2send = {"qty":qty, "prodid":prodid, "amount":amt, "total":total}
+      // make ajax call
+      $.ajax({
+        url:"/add_one_item",
+        type:"GET",
+        data:data2send,
+        dataType:"JSON",
+        success:function(rsp){
+          console.log(rsp)
+          $('#cartfdbk_'+prodid).html('Product added to cart')
+          $('#cartfdbk_'+prodid).addClass('alert alert-success')
+          
+        },
+        error:function(err){
+          console.log(err)
+        }
+      })
+    })
+    
+
+  })
+</script>
+{%endblock%}

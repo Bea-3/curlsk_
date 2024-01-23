@@ -1,0 +1,349 @@
+/* External css for homepage */
+*{
+    box-sizing: border-box;
+}
+div{
+    border:0px solid tomato
+}
+.col{
+    min-height:0px
+}
+.nav-link{
+    text-decoration:none;
+    color:#172B3A;
+}
+.nav-link:hover{
+  color:#efca08;
+  /* color:#99feff; */
+}
+.carousel-item{
+  height:500px;
+}
+#banner1{
+  height:inherit;
+  background-image: url('../images/afrocurl.jpg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  display: flex;
+  justify-items: center;
+}
+.caption1{
+  padding:10px;
+  align-self: center;
+}
+#banner2{
+  height:inherit;
+  background-image: url('../images/afroman.jpg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  display: flex;
+  justify-items: center;
+}
+.caption2{
+  padding:10px;
+  align-self: center;
+}
+#banner3{
+  height:inherit;
+  background-image: url('../images/toolsbanner.jpg');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  display: flex;
+  justify-items: center;
+}
+.caption3{
+  padding:10px;
+  align-self:center;
+}
+.content{
+  font-size:3.438rem;
+
+}
+.content2{
+  font-size: 3rem;
+
+}
+#salonbg{
+  /* background-image: url('../images/shampoo.jpg') right no-repeat; */
+  /* <img src="{{url_for('static', filename='images/shampoo.jpg')}}" class="d-block w-100" alt="..."> */
+  background-image: linear-gradient(rgb(0, 0, 0,0.2),rgb(0, 0, 0,0.2)),url('../images/testsalon.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #6f6f6f;
+  display: flex;
+  justify-items: center;
+}
+.inner_caption{
+  padding:10px;
+  align-self: center;
+  /* color: rgb(226, 204, 255); */
+  /* background-color: #131313; */
+  background-color:rgb(255, 255, 255,0.6) ;
+  /* background-color:rgb(226, 204, 255,0.5) */
+}
+.menubar{
+  background-color: #b983ff;
+}
+body{
+  /* background-color: rgba(153, 254, 255,0.2); */
+  background-color: white;
+}
+.logo{
+  width:9rem;
+  height:4rem;
+}
+.logofoot{
+  width:10rem;
+  height:6rem;
+  margin: 2px 2px;
+}
+#pre-footer,#footer{
+  /* background-color: rgba(40, 38, 44,0.9); */
+  /* color:rgb(226, 204, 255); */
+  background-color: #28262c;
+  color:white;
+  margin-left:5px;
+  margin-right: 5px;
+}
+.to_top{
+  position:fixed;
+	bottom:20px;
+	right:20px;
+}
+.to_top a{
+  background-color: #b983ff;
+}
+.footer_headings h5{
+  margin-top: 2rem;
+}
+.footlinks {
+  list-style-type: none;
+  padding:0px;
+  margin:0px;
+}
+.footlinks li a{
+  text-decoration: none;
+  color:white;
+}
+.footlinks li a:hover{
+  color: #efca08;
+}
+
+/* Registration form CSS */
+.welcome{
+    border:0px solid green;
+}
+.rowspace{
+    margin-bottom: 0.625em;
+    padding-left: 0.625em;
+}
+.inputedit{
+    padding-left:5px;
+}
+.bannerinfo{
+    border:2px solid black;
+    background-color: rgba(148, 179, 255,0.6) ;
+}
+
+/* error404 styling */
+#return_home{
+    border:1px solid #172B3A;
+    border-radius: 10px;
+    padding:5px;
+    background-color: #99feff;
+}
+#return_home:hover{
+    border-radius:20px;
+    background-color: aliceblue;
+    color:#b983ff
+}
+#return_home a{
+    text-decoration: none;
+    color:black;
+}
+
+/* CARD IMAGES */
+.img_wrapper{
+  width:100%;
+  height: 230px;
+}
+.img_wrapper img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
+
+/* Salon page services styles css */
+.style_media{
+  height:300px;
+  width:100%;
+}
+.style_media video{
+  height:300px;
+  width:100%;
+}
+/* Product page css */
+.product-img{
+  width:100%;
+  height:350px;
+}
+.product-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position: center;
+}
+
+/* Cart Table CSS */
+#cartTable table td{
+  vertical-align: middle;
+}
+/* .quantity #cartqty{
+  height:20px;
+  width:60px;
+} */
+.quantity{
+ display:flex;
+ justify-content: space-evenly;
+  
+  
+}
+#qtyitem{
+  border:1px solid grey;
+  width:50px;
+  
+}
+
+/* cartitem counter on homepage */
+#cart-container{
+  position: relative;
+  display:inline-block;
+  /* border: 1px solid black; */
+}
+#cart-container i{
+  font-size: x-large;
+}
+
+#cartitem_count{
+  /* background-color: red; */
+  color:white;
+  position:absolute;
+  border-radius: 50%;
+  top: 0px;
+  left: 0px;
+  right:-1px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 10px;
+
+}
+.checkoutTable table td{
+  vertical-align: middle;
+}
+.multitable table td{
+  vertical-align: middle;
+}
+.orderdets li{
+ margin:5px;
+ padding:5px;
+}
+.billinfo{
+  border: 1px solid  #d9d9d9;
+  border-radius: 5px;
+  padding:5px;
+  background-color: #f0f0f0;
+}
+.headingbg{
+  background-color: #28262c;
+  height:140px;
+  color:white;
+  justify-content: space-evenly;
+  background: linear-gradient(45deg, rgb(40, 38, 44) 11%, rgb(226, 204, 255) 100%);
+  /* background: linear-gradient(180deg, rgb(40, 38, 44) 7%, rgb(226, 204, 255) 100%); */
+  /* background: linear-gradient(-10deg, rgb(40, 38, 44) 7%, rgb(226, 204, 255) 100%); */
+}
+.headingbg h1{
+  align-self: center;
+}
+/* displaying vendor uploads in their dashboard */
+.venmedia video{
+  height:5rem;
+  width:8rem;
+}
+
+
+
+/* Media Query */
+@media only screen and (max-width: 640px){
+.navbar-brand{
+  width: 2rem;
+}
+.logo{
+  width:5rem;
+  height:2.5rem;
+}
+.logofoot{
+  width:6rem;
+  height:3rem;
+}
+.footer_headings{
+  padding-left:30px;
+}
+.content{
+  font-size: large;
+}
+.content2{
+  font-size: large;
+}
+.carousel-item{
+  height:350px;
+}
+#salonbg{
+  height:inherit;
+}
+.inner_caption{
+  padding:5px;
+  position: relative;
+  bottom:-40px;
+}
+#banner1{
+  height:inherit;
+  background-position:top;
+  background-repeat: no-repeat;
+  background-size:500px;
+}
+.caption1{
+  padding:10px;
+  align-self: flex-start;
+  
+}
+#banner2{
+  height:inherit;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 500px;
+}
+.caption2{
+  padding:5px;
+  position: relative;
+  bottom:-80px;
+}
+#banner3{
+  height:inherit;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.caption3{
+  padding:10px;
+  align-self:first baseline;
+}
+
+}

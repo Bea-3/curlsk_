@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Page</title>
+    <!-- Bootsrtap CSS-->
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" >
+    <!-- External CSS -->
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+	<link href="{{url_for('static', filename='fontawesome/css/all.css')}}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col ">
+                <nav class="navbar navbar-expand-lg" id="navbar">
+                    <div class="container-fluid">
+                        <div class="col-md-3">
+                            <a class="navbar-brand " href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" class="logo"></a>
+                        </div>
+                        <div class="col-md-6 text-end d-flex justify-content-end">
+                          <a class="nav-link" href="{{url_for('homepage')}}" >Home</a>
+                           <a class="nav-link"  href="{{url_for('ven_login')}}">Have an Account? <i class="fa-solid fa-shop"></i>Login</a>
+                        </div>
+                  </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="container col-xl-10 col-xxl-8 px-4 py-2">
+                <div class="row align-items-center g-lg-5 py-2">
+                  <div class="col-lg-7 text-center text-lg-start">
+                    <h1 class="display-4 fw-bold lh-1 mb-3">Salon Owner?</h1>
+                    <p class="col-lg-10 fs-4">
+                        Gain more customers by using this platform. Register now on curls Korner 
+                    </p>
+                  </div>
+                  <!--Registration Form-->
+                  
+                  <div class="col-md-10 mx-auto col-lg-5">
+                    <form class="p-4 p-md-3 border rounded-3 bg-light mb-2" action="{{url_for('ven_register')}}" method="post">
+                      {%with c=get_flashed_messages()%}
+                            {% for msg in c%}
+                               <p class="alert alert-danger"> {{msg}}</p>
+                            {% endfor %}
+                        {% endwith %}
+                        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+                      <div class="form-floating mb-2">
+                        <input type="text" name="ven_name" class="form-control" id="ven_name" placeholder="Business Name">
+                        <label for="ven_name" class="form-label">Business Name</label>
+                      </div>
+                      <div class="form-floating mb-2">
+                        <input type="email" name="ven_email" class="form-control" id="ven_email" placeholder="Business Email">
+                        <label for="ven_email" class="form-label">Business Email</label>
+                        <small id="feedback" class="mt-2"></small>
+                      </div>
+                      <div class="form-floating mb-2">
+                        <input type="password" name="ven_pwd" id="ven_pwd" class="form-control" placeholder="Password">
+                        <label for="ven_pwd" class="form-label">Password</label>
+                        <small id="pswdfdbk"></small>
+                      </div>
+                      <div class="text-end">
+                        <button class="btn btn-sm btn-secondary mb-2" type="button" id="showpwd" >show</button>
+                      </div>
+                      
+                      <div class="form-floating mb-3">
+                        <input type="password" name="confirmpwd" id="confirmpwd" class="form-control" placeholder="confirm password">
+                        <label for="confirmpwd" class="form-label">Confirm your password</label>
+                      </div>
+                      
+                      <small id="pswdinfo" >
+                        <ul>
+                            <li>Contains at least one digit</li>
+                            <li>Contains at least one lowercase letter, a-z</li>
+                            <li>Contains at least one uppercase letter, A-Z</li>
+                            <li>Contains at least one special character, !@#$%^&*</li>
+                            <li>Does not contain any whitespace</li>
+                            <li>at least 8 characters long</li>
+                        </ul>
+                    </small>
+                      <button class="btn btn-warning w-100" type="submit" id="signupbtn">Register</button>
+                      <hr class="my-4">
+                      <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+                    </form>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="row">
+            <div class="col basecol">
+                 <!--Pre Footer with Site Links-->
+                 <div class="row justify-content-between" id="pre-footer">
+                  <div class="col-md-4 mt-3 ps-2">
+                    <div class="">
+                      <a  href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/12t.png')}}" class="logofoot"></a>
+                    </div>
+                    <div>
+                      <h6>Join Our Mailing List</h6>
+                      <p>Be the first to know about latest salons, product updates, exciting news and announcements.</p>
+                    </div>
+                    <div >
+                      <form class="row align-items-center">
+                        <div class="col-10 my-2">
+                          <input type="email" class="form-control" name="subscribe" id="subscribe" placeholder="email@example.com">
+                        </div>
+                        <div class="col-10 text-end">
+                          <small id="subalert"></small>
+                          <button class="btn btn-outline-secondary w-100" type="button" id=sub_btn>Subscribe</button>
+                        </div>
+                      </form>
+                    </div>
+                    
+                  </div>
+               
+                  <div class="col-md-2 mt-3 footer_headings">
+                    <h5>Partner with us</h5>
+                    <ul class="footlinks">
+                      <li><a href="">Become a vendor</a></li>
+                      <li><a href="">Advertise</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-md-2 mt-3 footer_headings">
+                    <h5>Curls Korner</h5>
+                    <ul  class="footlinks">
+                      <li><a href="">About us</a></li>
+                      <li><a href="">Terms and Conditions</a></li>
+                      <li><a href="">Privacy Policy</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-md-2 mt-3 footer_headings">
+                    <h5 >Contact Us</h5>
+                      <ul class="footlinks">
+                          <li><a href="{{url_for('contactus')}}"><i class="fa-regular fa-envelope"></i> Message</a></li>
+                          <li><a href=""><i class="fa-brands fa-instagram"></i></a> Instagram</li>
+                          <li><a href=""><i class="fa-brands fa-facebook"></i></a> Facebook</li>
+                          <li><a href=""><i class="fa-brands fa-twitter"></i></a> Twitter</li>
+                      </ul>
+                  </div>
+                </div>
+                  <div class="to_top">
+                    <a href="#navbar" class="btn btn-lg"><i class="fa-solid fa-chevron-up"></i></a>
+                  </div>
+        
+                <!--Footer with copyright-->
+                <div class="row" id="footer">
+                  <div class="col-11 text-center mt-2">
+                    <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+<!-- jQuery file -->
+<script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+<script>
+  $(document).ready(function(){
+      $('#ven_email').change(function(){
+          var venemail = $(this).val()
+          var csrf = '{{csrf_token()}}'
+          var data2send = {"email":venemail, "csrf_token":csrf}
+          // make ajax call here
+          $.ajax({
+              url:"/checkvenemail",
+              data:data2send,
+              type:'POST',
+              dataType:'json',
+              success:function(response){
+                  $('#feedback').html(response['message']) 
+                  if (response['status'] == 'available'){
+                        $('#feedback').removeClass()
+                        $('#feedback').addClass('text-success')
+                        $('#signupbtn').removeAttr('disabled','disabled')        
+                    }else{
+                        $('#feedback').addClass('text-danger')
+                        $('#signupbtn').attr('disabled','disabled')
+                    }    
+              },
+              error:function(err){
+                  console.log(err)
+              }
+          })
+      })
+
+      // validating strong password.
+      $('#pswdinfo').hide()
+      $('#showpwd').hide()
+      $('#ven_pwd').change(function(){
+        $('#showpwd').show()
+
+          var pwd = $('#ven_pwd').val()
+          var csrf = '{{csrf_token()}}'
+          var data2send = {"password":pwd, "csrf_token":csrf}
+
+          $.ajax({
+              url:"/venpwd_security",
+              data:data2send,
+              type:'POST',
+              dataType:'json',
+              success:function(response){
+                  $('#pswdfdbk').html(response['message']);
+                  if (response['status']=='ok'){
+                    $('#pswdfdbk').removeClass('text-danger')
+                    $('#pswdfdbk').addClass('text-success')
+                    $('#signupbtn').removeAttr('disabled','disabled')
+                    $('#pswdinfo').hide()
+                  }else{
+                    $('#pswdinfo').show()
+                    $('#pswdfdbk').addClass('text-danger')
+                      $('#pswdinfo ul').addClass('text-danger')
+                      $('#signupbtn').attr('disabled','disabled')
+                  }
+              },
+              error:function(err){
+                  console.log(err)
+              }
+      })
+
+      $('#showpwd').click(function(){
+        var save = $('#ven_pwd').attr('type')
+        if( save == 'password'){
+          $('#ven_pwd').attr('type','text')
+          $(this).html('hide')
+        }else{
+          $('#ven_pwd').attr('type','password')
+          $(this).html('show')
+          
+        }
+        
+        
+      })
+
+  })
+
+  $('#sub_btn').click(function(){
+
+var subemail = $('#subscribe').val()
+var csrf = '{{csrf_token()}}'
+var data2send = {"subemail":subemail, "csrf_token":csrf}
+
+$.ajax({
+  url:'/subscribe/newsletter',
+  data:data2send,
+  type:'get',
+  success:function(response){
+    $('#subalert').html(response['message'])
+    if (response['status']=='ok'){
+        $('#subalert').removeClass('text-danger')
+        $('#subalert').addClass('text-success')
+    }else if(response['status']=='exists'){
+      $('#subalert').removeClass('text-success')
+      $('#subalert').addClass('text-info')
+    }else{
+        $('#subalert').addClass('text-danger')
+    }
+  },
+  error:function(err){
+    console.log(err)
+  }
+})
+
+})
+})
+</script>
+<!--External js-->
+<script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
+</body>
+</html>

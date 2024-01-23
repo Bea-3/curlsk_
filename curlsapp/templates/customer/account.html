@@ -1,0 +1,18 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock %}
+{% block content%}
+<div class="row" style="min-height:400px">
+            <div class="col-md-2">
+                <!--Side bar-->
+                {% include "customer/accountmenu.html"%}
+            </div>
+            <div class="col-md-10">
+              <h3>Hello , </h3>
+              <p>Kindly update your information</p>
+              <p>Updating your information will help recommend salons in your state</p>
+            </div>
+          </div>
+{% endblock content%}
+
+            

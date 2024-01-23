@@ -1,0 +1,65 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<a href="{{url_for('ven_orders')}}" class="btn mb-3"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+<div class="row">
+    
+              
+    
+    {#{history}#}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+                <th>Payment Information</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Reference No:</td> <td>{{history.pay_ref}}</td>
+            </tr>
+            <tr>
+                <td>Payment Date:</td> <td>{{history.pay_date}}</td>
+            </tr>
+            <tr>
+                <td>Order No:</td> <td># {{history.odetails.custorder_id}}</td>
+            </tr>
+            <tr>
+                <td>Order Total:</td> <td>&#8358 {{"{0:,.2f}".format(history.odetails.custorder_totalamt)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+                <th>Customer Information</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td></td> <td></td>
+            </tr>
+            <tr>
+                <td>Address:</td> <td>{{history.odetails.deliveryaddress}} , {{history.odetails.deliverystate}}</td>
+            </tr>
+            <tr>
+                <td>Phone Number:</td> <td>{{history.odetails.phonenum}}</td>
+            </tr>
+            <tr>
+                <td></td><td></td>
+            </tr>
+            <tr>
+                <td>Delivery Date</td> <td>1-3 business days</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+</div>
+{% endblock %}

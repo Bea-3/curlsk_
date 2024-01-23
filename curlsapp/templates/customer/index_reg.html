@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Registration page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootsrtap CSS-->
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" >
+    <!-- External CSS -->
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+	<link href="{{url_for('static', filename='fontawesome/css/all.css')}}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+                <div class="col-7 offset-2 mt-1 text-center">
+                    <a href="{{url_for('homepage')}}"><img src="{{url_for('static',filename='images/imgre.png')}}" width="200" height="90"></a>
+                    
+                </div>
+                <div class="col-7 offset-2 d-flex justify-content-end">
+                    <span class="text-muted">Salon owner or hair stylist? <a href="{{url_for('ven_signuppage')}}">register here</a></span>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7 mt-2 p-3" style="margin:auto; border-radius: 10px; background-color: #f5f5f5; ">
+                <h5 class="text-muted p-1 text-center ">Create your customer account</h5>
+            {% block content %}
+            
+
+              {% endblock %}
+            </div>
+        </div> 
+
+        <hr>
+        <!--Footer-->
+        <div class="row">
+            <div class="col-12 text-center text-muted mt-3">
+              <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
+          </div>
+          </div>
+    </div>
+
+<!-- jQuery file -->
+<script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+    {% block customjs %}
+
+    {% endblock %}
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+
+<!--External js-->
+<script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
+    </body>
+</html>
